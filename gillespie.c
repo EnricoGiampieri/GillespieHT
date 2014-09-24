@@ -1,11 +1,3 @@
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include "omp.h"
-#include "mkl.h"
-#include "mkl_vsl.h";
 /*
   
   GillespieHT software
@@ -33,6 +25,13 @@
  */
 
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "omp.h"
+#include "mkl.h"
+#include "mkl_vsl.h";
 #include "ioutils.h"
 
 
