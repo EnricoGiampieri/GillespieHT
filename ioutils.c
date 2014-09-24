@@ -19,16 +19,16 @@ char * fget_contents( char * fileName)
   char    c;             /* for reading from the input. */
   FILE   *input;         /* our input stream. */
   
-//   char * fileName = (char *) malloc(500*sizeof(char));// = (char *) malloc((strlen(dir)+(strlen(file)))*sizeof(char)+2);
-//   char * fileName2 = (char *) malloc(500*sizeof(char)); 
-//   strcpy( fileName, dir);
-//   
-//   
-//   strcpy( fileName2, file);
-//   strcat( fileName, fileName2);
+  //   char * fileName = (char *) malloc(500*sizeof(char));// = (char *) malloc((strlen(dir)+(strlen(file)))*sizeof(char)+2);
+  //   char * fileName2 = (char *) malloc(500*sizeof(char)); 
+  //   strcpy( fileName, dir);
+  //   
+  //   
+  //   strcpy( fileName2, file);
+  //   strcat( fileName, fileName2);
   
   if ((input = fopen(fileName, "r")) == NULL) {
-    fprintf(stderr, "Error opening input file %s\n", fileName);
+    fprintf(stderr, "ERROR: opening input file %s\n", fileName);
     exit(EXIT_FAILURE);
   }
   
@@ -36,16 +36,15 @@ char * fget_contents( char * fileName)
   i = 0;
   buffer_size = BUFSIZ;
   if ((buffer = malloc(buffer_size)) == NULL) {
-    fprintf(stderr, "Error allocating memory (before reading file).\n");
+    fprintf(stderr, "ERROR: allocating memory\n");
     fclose(input);
   }
   
   while ((c = fgetc(input)) != EOF) {
-    /* Enlarge buffer if necessary. */
     if (i == buffer_size) {
       buffer_size += BUFSIZ;
       if ((temp = realloc(buffer, buffer_size)) == NULL) {
-	fprintf(stderr, "Ran out of core while reading file.\n");
+	fprintf(stderr, "ERROR: reallocating memory\n");
 	fclose(input);
 	free(buffer);
 	exit(EXIT_FAILURE);
@@ -53,23 +52,20 @@ char * fget_contents( char * fileName)
       buffer = temp;
     }
     
-    /* Add input char to the buffer. */
     buffer[i++] = c;
   }
   
-  /* Test if loop terminated from error. */
   if (ferror(input)) {
-    fprintf(stderr, "There was a file input error.\n");
+    fprintf(stderr, "ERROR: reading file.\n");
     free(buffer);
     fclose(input);
     exit(EXIT_FAILURE);
   }
   
-  /* Make the buffer a bona-fide string. */
   if (i == buffer_size) {
     buffer_size += 1;
     if ((temp = realloc(buffer, buffer_size)) == NULL) {
-      fprintf(stderr, "Ran out of core (and only needed one more byte too ;_;).\n");
+      fprintf(stderr, "ERROR: reallocating problem\n");
       fclose(input);
       free(buffer);
       exit(EXIT_FAILURE);
@@ -122,14 +118,10 @@ BioSystem extract_from_json(char * json_system){
     
   }
   
-  
   matrixDimension = numReaction*numSpecies;
   
   stechioMatrix = (double*) calloc(matrixDimension,sizeof( double ) );
-  Karray = (double*) calloc(numReaction,sizeof( double ) );
-  //stechioMatrixRow = (int*)malloc(matrixDimension*sizeof( int ) );
-  //stechioMatrixCol = (int*)malloc(matrixDimension*sizeof( int ) );
-  
+  Karray = (double*) calloc(numReaction,sizeof( double ) );  
   
   for (int i=0;i<numReaction;i++)
   {
@@ -147,8 +139,6 @@ BioSystem extract_from_json(char * json_system){
       int stechio = cJSON_GetObjectItem(reagent,"stechio")->valueint;
       stechioMatrix[idx+i*numSpecies] = -stechio;
       matrixDimension = matrixDimension +1;
-      
-      
     }
     
     
@@ -164,8 +154,6 @@ BioSystem extract_from_json(char * json_system){
       matrixDimension = matrixDimension +1;
     }
   }
-  
-  
   
   BioSystem sys;
   sys.name = nameSystem;
@@ -191,7 +179,7 @@ int readDirectoryNum(char * namedirectory)
   d = opendir(namedirectory);
   
   if (!d)
-    printf("ERROR PATH IS NOT DIR");
+    printf("ERROR: path is not directory");
   
   while ((dir = readdir(d)) != NULL)
   {
@@ -244,17 +232,17 @@ void store_data( char *filepath,  char **data)
 
 char * getTime(char * buffer)
 {
-    time_t timer;
-   
-    struct tm* tm_info;
-
-    time(&timer);
-    tm_info = localtime(&timer);
-
-    strftime(buffer, 100, "%H:%M:%S %Y:%m:%d ", tm_info);
-    //puts(buffer);
-
-    return buffer;
+  time_t timer;
+  
+  struct tm* tm_info;
+  
+  time(&timer);
+  tm_info = localtime(&timer);
+  
+  strftime(buffer, 100, "%H:%M:%S %Y:%m:%d ", tm_info);
+  //puts(buffer);
+  
+  return buffer;
 }
 
 
