@@ -1,7 +1,7 @@
-C = cJSON.c ioutils.c msutils.c gillespie.c ms.c  
+C = ./cJSON/cJSON.c ioutils.c msutils.c gillespie.c ms.c  
 CCOMP = mpicc     # compilatore
 CFLAGS= -std=c99 -std=c99  -openmp  -parallel -g -mkl -DMKL_ILP64 -DVECTOR_SIZE=32
-LIB =   -lpthread -lm 
+LIB = -I./cJSON  -lpthread -lm 
 
 COUT= GillespieHT.x  
 
