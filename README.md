@@ -14,3 +14,9 @@ COMPILATION
 Requirements: Intel Compiler C icc, Intel MKL library, MPI Software Stack
 
 The software is compiled through Makefile
+
+
+EXTERNAL LIBS
+=============
+
+Thanks to cJSON (http://sourceforge.net/projects/cjson/)
