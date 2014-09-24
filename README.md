@@ -1,6 +1,8 @@
 GillespieHT
 ===========
 
+WARNING : SOFTWARE IN BETA, UNDER DEVELOPMENT
+
 Gillespie Algo High Throughput MPI application
 
 https://github.com/EricPasc/GillespieHT/
