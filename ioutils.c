@@ -11,21 +11,13 @@
 
 char * fget_contents( char * fileName)
 {
-  //char *fileName;
+  
   char   *buffer;        /* holds the file contents. */
   size_t  i;             /* indexing into buffer. */
   size_t  buffer_size;   /* size of the buffer. */
   char   *temp;          /* for realloc(). */
   char    c;             /* for reading from the input. */
   FILE   *input;         /* our input stream. */
-  
-  //   char * fileName = (char *) malloc(500*sizeof(char));// = (char *) malloc((strlen(dir)+(strlen(file)))*sizeof(char)+2);
-  //   char * fileName2 = (char *) malloc(500*sizeof(char)); 
-  //   strcpy( fileName, dir);
-  //   
-  //   
-  //   strcpy( fileName2, file);
-  //   strcat( fileName, fileName2);
   
   if ((input = fopen(fileName, "r")) == NULL) {
     fprintf(stderr, "ERROR: opening input file %s\n", fileName);
@@ -74,10 +66,6 @@ char * fget_contents( char * fileName)
   }
   buffer[i] = '\0';
   
-  //puts(buffer);
-  
-  /* Clean up. */
-  //free(buffer);
   fclose(input);
   
   
@@ -108,7 +96,7 @@ BioSystem extract_from_json(char * json_system){
   
   cJSON * status_array = cJSON_GetObjectItem(root,"status");
   int numStato = cJSON_GetArraySize(status_array);
-  status = (double*) calloc(numStato,sizeof( double ) );
+  status = (double*) mkl_calloc(numStato,sizeof( double ),VECTOR_SIZE );
   
   for(int n=0;n<numStato;n++){
     
@@ -120,8 +108,8 @@ BioSystem extract_from_json(char * json_system){
   
   matrixDimension = numReaction*numSpecies;
   
-  stechioMatrix = (double*) calloc(matrixDimension,sizeof( double ) );
-  Karray = (double*) calloc(numReaction,sizeof( double ) );  
+  stechioMatrix = (double*) mkl_calloc(matrixDimension,sizeof( double ),VECTOR_SIZE);
+  Karray = (double*) mkl_calloc(numReaction,sizeof( double ),VECTOR_SIZE );  
   
   for (int i=0;i<numReaction;i++)
   {

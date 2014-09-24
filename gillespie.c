@@ -11,6 +11,9 @@
 
 int gillespie(BioSystem  sistema,char * fileOut)
 {
+  __assume_aligned(sistema.status, VECTOR_SIZE);
+  __assume_aligned(sistema.stechioMatrix, VECTOR_SIZE);
+  __assume_aligned(sistema.Karray, VECTOR_SIZE);
   
   //init var
   double timeElapsed = 0;
@@ -18,7 +21,7 @@ int gillespie(BioSystem  sistema,char * fileOut)
   int numS = sistema.numSpecies;
   
   double * Knew;
-  Knew = (double *) malloc(numR*sizeof(double));
+  Knew = (double *) mkl_malloc(numR*sizeof(double),VECTOR_SIZE);
   
   //generazione random
   double *randomVector;
@@ -91,7 +94,7 @@ int gillespie(BioSystem  sistema,char * fileOut)
     for(int i = 1;i<numR;i++){
       Knew[i] = Knew[i]+Knew[i-1];	  
     }
-   // printf("%lf",normCost);
+   
     //random time
     statusVsl = vdRngExponential( VSL_RNG_METHOD_EXPONENTIAL_ICDF_ACCURATE, stream, 1,randTime, 0, 1/normCost );
     
@@ -121,7 +124,6 @@ int gillespie(BioSystem  sistema,char * fileOut)
     sprintf(istData,"%lf\t%d\t %lf\n", timeElapsed, idx_sel,normCost);
     strcat(output[countChar], istData);
     strcat(output[countChar], "\n\n");  
-    //strcat(output[countChar], "\n");
     //end write istant data
         
   }
