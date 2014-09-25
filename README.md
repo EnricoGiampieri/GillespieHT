@@ -114,7 +114,7 @@ ATTENTION : all stechiometrics idex must be positive.
 
 ```
 
-NOTE: In the example the reactions are not balanced, is not mistake, is only example.
+NOTE: *In the example the reactions are not balanced and K is random, is not mistake, is only example.*
 
 
 
