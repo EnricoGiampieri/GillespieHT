@@ -52,7 +52,7 @@ Example of jSON input
 
 
 ```
-jSON
+json
 
 {
     "nameSystem": "prova1", 
