@@ -24,8 +24,17 @@ is MKL flags: -DMKL_ILP64.
 For found correct MKL flags, you can use Intel® Math Kernel Library Link Line Advisor:
 https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor
 
+USE application
+---------------
+
+You can launch application:
+
+`
+mpirun -np $NCORE ./GillespieHT $DIR_INPUT $DIR_OUTPUT
+`
+
 
 EXTERNAL LIBS
-=============
+-------------
 
 Thanks to cJSON (http://sourceforge.net/projects/cjson/)
