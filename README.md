@@ -40,6 +40,7 @@ where:
 
 jSON Input
 ------
+##Description
 
 Il JSON che descrive il sistema deve avere le seguenti caratteristiche:
 
@@ -60,7 +61,7 @@ Il JSON che descrive il sistema deve avere le seguenti caratteristiche:
 
 ATTENTION : all stechiometrics idex must be positive.
 
-Example of jSON input:
+##Example of jSON input:
 
 ```json
 
