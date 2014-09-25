@@ -58,6 +58,8 @@ Il JSON che descrive il sistema deve avere le seguenti caratteristiche:
     - stechio(int) : stechiometrics index
 * status (jSON array) : number of initial quantities per species, the order is the same of species jSON array.
 
+ATTENTION : all stechiometrics idex must be positive.
+
 Example of jSON input:
 
 ```json
@@ -111,7 +113,7 @@ Example of jSON input:
 
 ```
 
-
+NOTE: In the example the reactions are not balanced, is not mistake, is only example.
 
 
 
