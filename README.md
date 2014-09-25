@@ -116,6 +116,62 @@ ATTENTION : all stechiometrics idex must be positive.
 
 NOTE: *In the example the reactions are not balanced and K is random, is not mistake, is only example.*
 
+OUTPUT
+------
+
+#####MASTER OUTPUT
+
+The ouput of master process give information about the progress of the simulation and its parameter. 
+The example is reported below.
+
+```
+GILLESPIE HT v 1.0                                                                                                                                                     
+Gillespie algo high throughput software                                                                                                                                
+https://github.com/EricPascolo/GillespieHT                                                                                                                                
+Created by Eric Pascolo                                                                                                                                                
+                                                                                                                                                                       
+        Parallel Run with 3 slave                                                                                                                                      
+        Input directory : ../test/                                                                                                                                     
+        Output directory : ../testOut//                                                                                                                                
+        Number of file: 7                                                                                                                                              
+                                                                                                                                                                       
+BEGIN Simulation at 10:23:09 2014:09:25                                                                                                                                
+                                                                                                                                                                       
+                                                                                                                                                                       
+        LIST FILE                                                                                                                                                      
+        ---------                                                                                                                                                      
+            0          prova5.json                                                                                                                                     
+            1          prova4.json                                                                                                                                     
+            2          prova2.json                                                                                                                                     
+            3          prova6.json                                                                                                                                     
+            4          prova3.json                                                                                                                                     
+            5          prova7.json                                                                                                                                     
+            6          prova1.json                                                                                                                                     
+        ---------                                                                                                                                                      
+                                                                                                                                                                       
+SLAVE     2      BEGIN:           10:23:09 2014:09:25  -> file     1                                                                                                   
+SLAVE     3      BEGIN:           10:23:09 2014:09:25  -> file     2                                                                                                   
+SLAVE     1      BEGIN:           10:23:09 2014:09:25  -> file     0
+SLAVE     2        END:           10:23:09 2014:09:25  -> file     1
+SLAVE     2      BEGIN:           10:23:09 2014:09:25  -> file     3
+SLAVE     3        END:           10:23:09 2014:09:25  -> file     2
+SLAVE     3      BEGIN:           10:23:09 2014:09:25  -> file     4
+SLAVE     1        END:           10:23:09 2014:09:25  -> file     0
+SLAVE     1      BEGIN:           10:23:09 2014:09:25  -> file     5
+SLAVE     2        END:           10:23:09 2014:09:25  -> file     3
+SLAVE     2      BEGIN:           10:23:09 2014:09:25  -> file     6
+SLAVE     3        END:           10:23:09 2014:09:25  -> file     4
+SLAVE     1        END:           10:23:09 2014:09:25  -> file     5
+SLAVE     2        END:           10:23:09 2014:09:25  -> file     6
+SLAVE     2   SHUTDOWN:           10:23:09 2014:09:25 
+SLAVE     1   SHUTDOWN:           10:23:09 2014:09:25
+SLAVE     3   SHUTDOWN:           10:23:09 2014:09:25
+
+
+```
+
+
+#####SLAVE OUTPUT
 
 
 
