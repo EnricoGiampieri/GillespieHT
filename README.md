@@ -172,8 +172,12 @@ SLAVE     3   SHUTDOWN:           10:23:09 2014:09:25
 
 
 #####SLAVE OUTPUT
+All slave write an output file in $DIR_OUTPUT named as nameSystem. For each time step, slave print two line:
 
-
+```
+STATUS ARRAY
+TIME   NUM_REACTION    K_SUM
+```
 
 EXTERNAL LIBS
 -------------
