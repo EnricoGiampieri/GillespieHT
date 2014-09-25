@@ -38,6 +38,76 @@ where:
 - $DIR_INPUT : directory that contains jSON file that described input system
 - $DIR_OUTPUT : directory that will contain output file
 
+jSON Input
+------
+
+
+
+
+
+
+
+Example of jSON input
+
+
+
+`
+json
+
+{
+    "nameSystem": "prova1", 
+    "simultationTime":1000,
+    "species" :[
+	  {"name":"Na","idx":0}, {"name":"Cl","idx":1},{"name":"NaCl","idx":2},
+	  {"name":"CH4","idx":3},{"name":"O2","idx":4},{"name":"CO2","idx":5},
+	  {"name":"H2O","idx":6},{"name":"F","idx":7},{"name":"NaF","idx":8}
+    
+    ],
+    
+    
+    "status" :[{"num":0},{"num":1},{"num":3},{"num":4},{"num":5},{"num":6},{"num":7},{"num":8},{"num":9}],
+    
+    "reaction": [
+
+      {  
+ 	"K" :       8,
+        "reagents": [
+	  {"idx":0,"stechio":1},{"idx":1,"stechio":1}   
+	 ], 
+        "products": [
+	  {"idx":2,"stechio":1}   
+	 ]
+       },
+	
+	{ 
+ 	"K" :       10,
+        "reagents": [
+	  {"idx":3,"stechio":1},{"idx":4,"stechio":1}   
+	 ], 
+        "products": [
+	  {"idx":5,"stechio":1},{"idx":6,"stechio":1}    
+	 ]
+       },
+       
+       { 
+ 	"K" :      12,
+        "reagents": [
+	  {"idx":0,"stechio":1},{"idx":7,"stechio":1}   
+	 ], 
+        "products": [
+	  {"idx":8,"stechio":1}    
+	 ]
+       }
+     ]
+}
+
+`
+
+
+
+
+
+
 EXTERNAL LIBS
 -------------
 
