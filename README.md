@@ -45,11 +45,11 @@ Il JSON che descrive il sistema deve avere le seguenti caratteristiche:
 
 * nameSystem (String): system name (output file is named as this)
 * simultationTime (int) : max simulation time
-* species (jSON array) : array of chemical species 	 
+* species (jSON array) : array of chemical species  
   - name (String) : name of specie;
   - idx (int) : index unique corresponding specie in simulation ; 
 * status (jSON array) : number of initial quantities per species, the order is the same of species jSON array.
-* reaction (jSON array) : array of reaction in the system.
+* reaction (jSON array) : array of reaction in the system
   -K (double) : K costant of reaction
   -reagents (JSON array) : reagents array
     -idx (int) : index of species
