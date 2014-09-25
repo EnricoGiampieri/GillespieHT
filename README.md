@@ -46,9 +46,9 @@ Il JSON che descrive il sistema deve avere le seguenti caratteristiche:
 - nameSystem (String): system name (output file is named as this)
 - simultationTime (int) : max simulation time
 - species (jSON array) : for each cell there are are a jSON object 
--- i: name->Stringa e 
--- idx->int; 
--- name: identifica il nome della specie chimica e idx il suo indice di riferimento.
+> i: name->Stringa e 
+>idx->int; 
+> name: identifica il nome della specie chimica e idx il suo indice di riferimento.
 - status (jSON array) -> ogni cella contiente un oggetto JSON con il campo num->int, mi indica il numero di molecole iniziali per ciascun composto, l'ordine è quello dei composti dato nell'array species
 -reaction -> JSON array -> ogni cella contiente un oggetto JSON complesso che descrive la reazione chimica.
 
