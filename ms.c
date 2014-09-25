@@ -168,7 +168,7 @@ int main ( int argc, char *argv[] )
   printf("\n");
   printf("GILLESPIE HT v 1.0 \n");
   printf("Gillespie algo high throughput software\n");
-  printf("https://github.com/EricPasc/GillespieHT\n");
+  printf("https://github.com/EricPascolo/GillespieHT\n");
   printf("Created by Eric Pascolo\n");
   printf("\n");
   printf("\tParallel Run with %d slave\n",nproc-1);
