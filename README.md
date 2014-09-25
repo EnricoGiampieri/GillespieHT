@@ -11,7 +11,7 @@ This software take in input a Biological linear system of reaction described to 
 If you use MPI you can compute more system in parallel because this is High Throughput application.
 
 COMPILATION
-===========
+-----------
 
 Requirements: Compiler C (icc preferred), Intel MKL library, MPI Software Stack
 
