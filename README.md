@@ -48,7 +48,6 @@ Il JSON che descrive il sistema deve avere le seguenti caratteristiche:
 * species (jSON array) : array of chemical species  
   - name (String) : name of specie;
   - idx (int) : index unique corresponding specie in simulation ; 
-* status (jSON array) : number of initial quantities per species, the order is the same of species jSON array.
 * reaction (jSON array) : array of reaction in the system
   -K (double) : K costant of reaction
   -reagents (JSON array) : reagents array
@@ -57,6 +56,7 @@ Il JSON che descrive il sistema deve avere le seguenti caratteristiche:
   -products (JSON array) : reagents array
     -idx (int) : index of species
     -stechio(int) : stechiometrics index
+* status (jSON array) : number of initial quantities per species, the order is the same of species jSON array.
 
 Example of jSON input:
 
