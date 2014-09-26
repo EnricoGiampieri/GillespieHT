@@ -38,6 +38,13 @@ where:
 - $DIR_INPUT : directory that contains jSON file that described input system
 - $DIR_OUTPUT : directory that will contain output file
 
+Serial run is allow, in this case master node compute the algorithm.
+You can launch application in serial mode using:
+
+`
+./GillespieHT $DIR_INPUT $DIR_OUTPUT
+`
+
 jSON Input
 ------
 #####Description
@@ -167,6 +174,7 @@ SLAVE     2   SHUTDOWN:           10:23:09 2014:09:25
 SLAVE     1   SHUTDOWN:           10:23:09 2014:09:25
 SLAVE     3   SHUTDOWN:           10:23:09 2014:09:25
 
+END Simulation at 10:23:09 2014:09:25
 
 ```
 
