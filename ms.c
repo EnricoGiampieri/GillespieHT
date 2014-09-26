@@ -33,7 +33,7 @@
 #include <stdbool.h>
 #include <mpi.h>
 #include <unistd.h>
-
+#include <omp.h>
 #include "msutils.h"
 #include "ioutils.h"
 #include "gillespie.h"
@@ -145,6 +145,8 @@ void Slave(int myid, int nproc,char * dirIn,char * dirOut, char ** listFile, int
 int main ( int argc, char *argv[] )
 {
   
+  omp_set_num_threads(omp_get_max_threads());
+  
   //Control number of input parameter
   if(argc<3)
   {
@@ -198,7 +200,7 @@ int main ( int argc, char *argv[] )
     printf("GILLESPIE HT v 1.0 \n");
     printf("Gillespie algo high throughput software\n");
     printf("https://github.com/EricPascolo/GillespieHT\n");
-    printf("Created by Eric Pascolo\n");
+    printf("Created by Eric Pascolo (set 2014)\n");
     printf("\n");
     
     if(nproc>1)
@@ -206,6 +208,7 @@ int main ( int argc, char *argv[] )
     else
       printf("\tSerial Run\n");
     
+    printf("\tThreads/Task : %d \n",omp_get_max_threads());
     printf("\tInput directory : %s \n",dirIn);
     printf("\tOutput directory : %s \n",dirOut);
     printf("\tNumber of file: %d \n",numFile);
