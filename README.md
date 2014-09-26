@@ -137,7 +137,8 @@ Gillespie algo high throughput software
 https://github.com/EricPascolo/GillespieHT                                                                                                                                
 Created by Eric Pascolo                                                                                                                                                
                                                                                                                                                                        
-        Parallel Run with 3 slave                                                                                                                                      
+        Parallel Run with 3 slave
+        Threads/Task : 4
         Input directory : ../test/                                                                                                                                     
         Output directory : ../testOut//                                                                                                                                
         Number of file: 7                                                                                                                                              
