@@ -1,27 +1,27 @@
 /*
-  
-  GillespieHT software
-  
-  Copyright (c) 2014, Eric Pascolo
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
- 
-  The above copyright notice and this permission notice shall be included in
-  all copies or substantial portions of the Software.
- 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-  THE SOFTWARE.
- 
+ *  
+ *  GillespieHT software
+ *  
+ *  Copyright (c) 2014, Eric Pascolo
+ * 
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ * 
  */
 
 
@@ -38,19 +38,67 @@
 #include "ioutils.h"
 #include "gillespie.h"
 
-void Master(int nproc, char ** listFile, int numFile)
+
+void computeSystem(int myid, int nproc,char * dirIn,char * dirOut, char ** listFile, int numFile, int idxFile)
 {
-  int numSlave = nproc-1;
   
-  for(int i=0;i<numFile;i++){
-    int whois = comm_get_ready_slave();
-    MPI_Send( &i, 1, MPI_INT, whois, 0, MPI_COMM_WORLD );
+  BioSystem sistema;
+  char * json_system;  
+  
+  //set input path file
+  char * fileNameIn = (char *) malloc(1000*sizeof(char)); 
+  char * fileNameOut = (char *) malloc(1000*sizeof(char)); 
+  strcpy( fileNameIn, dirIn);
+  strcat( fileNameIn, listFile[idxFile]);
+  
+  //extract system from file
+  json_system = fget_contents(fileNameIn);
+  sistema = extract_from_json(json_system);
+  
+  //set output path file
+  strcpy( fileNameOut,dirOut);
+  strcat( fileNameOut, sistema.name);
+  strcat( fileNameOut, ".out");
+  
+  
+  //algo submission
+  gillespie(sistema,fileNameOut);
+  
+}
+
+
+void Master(int nproc, char * dirIn,char * dirOut, char ** listFile, int numFile)
+{
+  
+  if(nproc>1)
+  {
+    int numSlave = nproc-1;
+    
+    for(int i=0;i<numFile;i++)
+    {
+      int whois = comm_get_ready_slave();
+      MPI_Send( &i, 1, MPI_INT, whois, 0, MPI_COMM_WORLD );
+    }
+    
+    for (int i=1;i<nproc;i++){
+      int ciccio =-1;
+      MPI_Send( &ciccio, 1, MPI_INT, i, 0, MPI_COMM_WORLD );
+    }
+  }
+  else
+  {
+   for(int i=0;i<numFile;i++)
+   { 
+     char * istantMaster;
+     istantMaster = (char *) malloc(100*sizeof(char ));
+     printf("MASTER  %10s: %30s -> file %5d\n","BEGIN",getTime(istantMaster),i);
+     computeSystem(0,nproc,dirIn,dirOut, listFile,numFile,i);
+     printf("MASTER  %10s: %30s -> file %5d\n","END",getTime(istantMaster),i);
+   }
   }
   
-  for (int i=1;i<nproc;i++){
-    int ciccio =-1;
-    MPI_Send( &ciccio, 1, MPI_INT, i, 0, MPI_COMM_WORLD );
-  }
+  
+  
 }
 
 void Slave(int myid, int nproc,char * dirIn,char * dirOut, char ** listFile, int numFile)
@@ -59,7 +107,7 @@ void Slave(int myid, int nproc,char * dirIn,char * dirOut, char ** listFile, int
   char * istantSlave;
   istantSlave = (char *) malloc(100*sizeof(char ));
   bool work_to_do = true;
-   
+  
   
   while(work_to_do)
   {
@@ -76,46 +124,27 @@ void Slave(int myid, int nproc,char * dirIn,char * dirOut, char ** listFile, int
     }
     
     printf("SLAVE %5d %10s: %30s -> file %5d\n",myid,"BEGIN",getTime(istantSlave),idxFile);
-                       
-    BioSystem sistema;
-    char * json_system;  
     
-    //set input path file
-    char * fileNameIn = (char *) malloc(1000*sizeof(char)); 
-    char * fileNameOut = (char *) malloc(1000*sizeof(char)); 
-    strcpy( fileNameIn, dirIn);
-    strcat( fileNameIn, listFile[idxFile]);
-    
-    //extract system from file
-    json_system = fget_contents(fileNameIn);
-    sistema = extract_from_json(json_system);
-    
-    //set output path file
-    strcpy( fileNameOut,dirOut);
-    strcat( fileNameOut, sistema.name);
-    strcat( fileNameOut, ".out");
-    
-    
-    //algo submission
-    gillespie(sistema,fileNameOut);
+    computeSystem(myid,nproc,dirIn,dirOut, listFile,numFile,idxFile);
     
     printf("SLAVE %5d %10s: %30s -> file %5d\n",myid,"END",getTime(istantSlave),idxFile);
-                       
+    
   }
   
   printf("SLAVE %5d %10s: %30s \n",myid,"SHUTDOWN",getTime(istantSlave));
   
 }
 
+
 /*
- 
- MAIN FUNCTION
- 
+ * 
+ * MAIN FUNCTION
+ * 
  */
 
 int main ( int argc, char *argv[] )
 {
-    
+  
   //Control number of input parameter
   if(argc<3)
   {
@@ -165,41 +194,47 @@ int main ( int argc, char *argv[] )
   
   if(myid == 0)
   {
-  printf("\n");
-  printf("GILLESPIE HT v 1.0 \n");
-  printf("Gillespie algo high throughput software\n");
-  printf("https://github.com/EricPascolo/GillespieHT\n");
-  printf("Created by Eric Pascolo\n");
-  printf("\n");
-  printf("\tParallel Run with %d slave\n",nproc-1);
-  printf("\tInput directory : %s \n",dirIn);
-  printf("\tOutput directory : %s \n",dirOut);
-  printf("\tNumber of file: %d \n",numFile);
-  printf("\nBEGIN Simulation at %s\n",getTime(istant));
-  printf("\n");
-  printf("\n");
-  printf("\tLIST FILE\n");
-  printf("\t---------\n");
-  for(int i=0;i<numFile;i++)
-    printf("\t%5d %20s\n",i,list[i]);
-  printf("\t---------\n\n");
+    printf("\n");
+    printf("GILLESPIE HT v 1.0 \n");
+    printf("Gillespie algo high throughput software\n");
+    printf("https://github.com/EricPascolo/GillespieHT\n");
+    printf("Created by Eric Pascolo\n");
+    printf("\n");
+    
+    if(nproc>1)
+      printf("\tParallel Run with %d slave\n",nproc-1);
+    else
+      printf("\tSerial Run\n");
+    
+    printf("\tInput directory : %s \n",dirIn);
+    printf("\tOutput directory : %s \n",dirOut);
+    printf("\tNumber of file: %d \n",numFile);
+    printf("\nBEGIN Simulation at %s\n",getTime(istant));
+    printf("\n");
+    printf("\n");
+    printf("\tLIST FILE\n");
+    printf("\t---------\n");
+    for(int i=0;i<numFile;i++)
+      printf("\t%5d %20s\n",i,list[i]);
+    printf("\t---------\n\n");
   }
   
   MPI_Barrier(MPI_COMM_WORLD);
   
   if(myid == 0)
   {
-    Master(nproc,list,numFile);
-    
+    Master(nproc,dirIn,dirOut,list,numFile);
   }
   else
+  {
     Slave(myid,nproc,dirIn,dirOut,list,numFile);
+  }
   
-   MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Barrier(MPI_COMM_WORLD);
   
   if(myid == 0)
   {
-  printf("\nEND Simulation at %s\n",getTime(istant));
+    printf("\nEND Simulation at %s\n",getTime(istant));
   }
   
   error = MPI_Finalize();
